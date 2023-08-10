@@ -1,20 +1,31 @@
 package com.billingService.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.billingService.models.Customer;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Data
 public class Bill {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date billDate;
     private long customerId;
-    @OneToMany
+    @OneToMany(mappedBy = "bill")
     private List<ProductItem> productItems;
+
+    @Transient
+    private Customer customer;
 
 }
