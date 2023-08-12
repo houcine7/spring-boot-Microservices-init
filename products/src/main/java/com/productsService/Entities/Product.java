@@ -13,7 +13,6 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 public class Product {
     @Id
@@ -21,4 +20,5 @@ public class Product {
     private Long id ;
     private String name;
     private String price;
+    private int quantity;
 }

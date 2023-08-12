@@ -20,18 +20,21 @@ public class ProductService {
 			productsRepository.save(new Product(
 						null,
 						"product 1",
-						"25 MAD"
+						"25 MAD",
+					50
 				));
 
 			productsRepository.save(new Product(
 					null,
 					"product 2",
-					"12 MAD"
+					"18 MAD",
+					100
 			));
 			productsRepository.save(new Product(
 					null,
 					"product 3",
-					"24 MAD"
+					"10 MAD",
+					15
 			));
 		};
 	}

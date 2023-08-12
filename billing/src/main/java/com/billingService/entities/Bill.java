@@ -21,7 +21,7 @@ public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date billDate;
-    private long customerId;
+    private Long customerId;
     @OneToMany(mappedBy = "bill")
     private List<ProductItem> productItems;
 

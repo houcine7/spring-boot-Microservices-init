@@ -34,14 +34,13 @@ public class BillRestController {
     ProductRestClient productRestClient;
 
     @GetMapping("/fullObject/{id}")
-    ResponseEntity<Bill> getBillById(@PathVariable long id){
+    ResponseEntity<Bill> getBillById(@PathVariable Long id){
 
         System.out.println("hhhhhhhhh  :"+id);
         Bill bill = billRepository.findById(id).get();
-        System.out.println(bill);
         bill.setCustomer(customerRestClient.getCustomerById(bill.getCustomerId()));
-        List<ProductItem> productItems =bill.getProductItems();
-        productItems.forEach(item->{
+
+        bill.getProductItems().forEach(item->{
             item.setProduct(productRestClient.findProductById(item.getProductId()));
         });
 

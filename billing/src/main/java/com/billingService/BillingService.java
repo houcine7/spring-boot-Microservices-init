@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 
@@ -35,32 +36,39 @@ public class BillingService {
 							ProductRestClient productRestClient){
 
 		return args -> {
-			Collection<Product> products = customerRestClient.getAllProducts().getContent();
+			try{
+				List<Product> products = productRestClient.getAllProducts();
+				long customerId= 1L;
+				Customer customer =customerRestClient.getCustomerById(customerId);
 
-			Long customerId= 1L;
-			Customer customer =customerRestClient.getCustomerById(customerId);
+				if(customer==null)
+					throw new RuntimeException("Customer not found ");
+				//Bill bill =new Bill();
 
-			if(customer==null)
-				throw new RuntimeException("Customer not found ");
-			//Bill bill =new Bill();
-
-			Bill bill =Bill.builder()
-					.billDate(new Date())
-					.customerId(customerId)
-					.build();
-
-			Bill savedBill= billRepository.save(bill);
-
-			products.forEach(item->{
-				ProductItem pItem =ProductItem.builder()
-						.productId(item.getId())
-						.quantity(new Random().nextInt(20)+1)
-						.bill(savedBill)
-						.unitPrice(item.getPrice())
-						.discount(Math.random())
+				Bill bill =Bill.builder()
+						.billDate(new Date())
+						.customerId(customerId)
 						.build();
-				productItemRepository.save(pItem);
-			});
+
+				Bill savedBill= billRepository.save(bill);
+
+				products.forEach(item->{
+					System.out.println(item.getId());
+					System.out.println(item);
+					ProductItem pItem =ProductItem.builder()
+							.productId(item.getId())
+							.quantity(new Random().nextInt(20)+1)
+							.bill(savedBill)
+							.unitPrice(item.getPrice())
+							.discount(Math.random())
+							.build();
+					productItemRepository.save(pItem);
+				});
+
+			}catch(Exception e){
+				System.out.println(e.getMessage());
+			}
+
 
 		};
 

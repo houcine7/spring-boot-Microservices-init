@@ -6,19 +6,36 @@
   <component name="ChangeListManager">
     <list default="true" id="8de36da2-a323-46e5-abdf-b2865abacecd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/billing/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/billing/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/BillingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/BillingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/billing/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/customers/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/customers/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/products/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/products/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/controllers/BillRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/controllers/BillRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/entities/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/entities/Bill.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/entities/ProductItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/entities/ProductItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/models/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/models/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/models/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/models/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/repositories/BillRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/repositories/BillRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/services/CustomerRestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/services/CustomerRestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/billing/src/main/java/com/billingService/services/ProductRestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/billing/src/main/java/com/billingService/services/ProductRestClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/products/src/main/java/com/productsService/Entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/products/src/main/java/com/productsService/Entities/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/products/src/main/java/com/productsService/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/products/src/main/java/com/productsService/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/products/src/main/java/com/productsService/Repositories/ProductsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/products/src/main/java/com/productsService/Repositories/ProductsRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -40,21 +57,21 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "jdk.selected.JAVA_MODULE": "17",
-    "last_opened_file_path": "C:/Users/Acer/Desktop/myprojects/SpringBoot Microservices"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Acer/Desktop/myprojects/SpringBoot Microservices&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Acer\Desktop\myprojects\SpringBoot Microservices\billing\src\main\java" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CustomerService">
+  <component name="RunManager" selected="Application.ProductService">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -147,9 +164,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CustomerService" />
         <item itemvalue="Application.ProductService" />
         <item itemvalue="Application.AppApplication" />
+        <item itemvalue="Application.CustomerService" />
         <item itemvalue="Application.DiscoveryService" />
         <item itemvalue="JUnit.All in app" />
       </list>
@@ -165,5 +182,16 @@
       <updated>1691669817255</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/customers/src/main/java/com/customerService/CustomerService.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
