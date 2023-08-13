@@ -9,6 +9,8 @@
     <file url="file://$PROJECT_DIR$/discovery-service/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/orderService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/orderService/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/products/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/products/src/main/resources" charset="UTF-8" />
   </component>

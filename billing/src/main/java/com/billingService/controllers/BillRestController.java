@@ -36,7 +36,6 @@ public class BillRestController {
     @GetMapping("/fullObject/{id}")
     ResponseEntity<Bill> getBillById(@PathVariable Long id){
 
-        System.out.println("hhhhhhhhh  :"+id);
         Bill bill = billRepository.findById(id).get();
         bill.setCustomer(customerRestClient.getCustomerById(bill.getCustomerId()));
 
