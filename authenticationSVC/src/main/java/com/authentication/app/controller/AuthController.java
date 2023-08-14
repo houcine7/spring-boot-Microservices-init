@@ -1,19 +1,22 @@
 package com.authentication.app.controller;
 
 
+import com.authentication.app.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -21,33 +24,29 @@ import java.util.stream.Collectors;
 @RequestMapping("/auth")
 public class AuthController {
 
-    JwtEncoder jwtEncoder;
+   AuthService authService;
 
-    AuthController(JwtEncoder jwtEncoder){
-        this.jwtEncoder = jwtEncoder;
+    AuthController(AuthService authService) {
+        this.authService=authService;
     }
 
 
-
     @PostMapping("/register")
-    ResponseEntity<Map> register(Authentication authentication){
+    ResponseEntity<Map> register(String grantType,
+                                 String username, String password,
+                                 String refreshToken, boolean withRefreshToken){
 
-        Instant instant =Instant.now();
-        String scope =authentication.getAuthorities().stream()
-                .map(item->item.getAuthority())
-                .collect(Collectors.joining(" "));
+        Map<String,String> result=null;
 
-        JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
-                .subject(authentication.getName())
-                .issuer("authentication-svc")
-                .issuedAt(instant)
-                .expiresAt(instant.plus(5, ChronoUnit.MINUTES))
-                .claim("scope",scope)
-                .build();
+        try{
+            result=this.authService.authenticate(
+                    grantType,username,password,refreshToken,withRefreshToken
+            );
+        }catch(Exception e){
+            return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.BAD_REQUEST);
+        }
 
-        String jwtToken =jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
-
-        return new ResponseEntity<>(Map.of("access_toekn",jwtToken),HttpStatus.OK);
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
 }
