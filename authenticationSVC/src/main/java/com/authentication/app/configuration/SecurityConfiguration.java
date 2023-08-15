@@ -1,6 +1,7 @@
 package com.authentication.app.configuration;
 
 
+import com.authentication.app.service.UserDetailsServiceImp;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -41,20 +42,12 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(UserDetailsService userDetailsService){
+    AuthenticationManager authenticationManager(UserDetailsServiceImp userDetailsService){
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(this.passwordEncoder());
         authProvider.setUserDetailsService(userDetailsService);
 
         return new ProviderManager(authProvider);
-    }
-
-    @Bean
-    InMemoryUserDetailsManager userDetailsManager(){
-        return new InMemoryUserDetailsManager(
-                User.withUsername("user").password(passwordEncoder().encode("5555")).roles("USER").build(),
-                User.withUsername("admin").password(passwordEncoder().encode("5555")).roles("ADMIN","USER").build()
-        );
     }
 
     @Bean
