@@ -1,6 +1,9 @@
 package com.authentication.app.service;
 
 
+import com.authentication.app.Enums.Role;
+import com.authentication.app.entity.UserEntity;
+import com.authentication.app.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,84 +17,97 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
-
-    JwtEncoder jwtEncoder;
     AuthenticationManager authenticationManager;
-    JwtDecoder jwtDecoder;
     UserDetailsService userDetailsService;
+    UserRepository userRepository;
+    JwtServices jwtServices;
 
-    AuthService(JwtEncoder jwtEncoder,
-    AuthenticationManager authenticationManager,
-    JwtDecoder jwtDecoder,
-    UserDetailsService userDetailsService
+    AuthService(
+    AuthenticationManager authenticationManager, JwtServices jwtServices,
+    UserDetailsService userDetailsService,
+    UserRepository userRepository
     ){
         this.userDetailsService=userDetailsService;
         this.authenticationManager =authenticationManager;
-        this.jwtDecoder=jwtDecoder;
-        this.jwtEncoder=jwtEncoder;
+        this.jwtServices=jwtServices;
+        this.userRepository= userRepository;
+
     }
 
-    public Map<String,String> authenticate(
-            String grantType,
-            String username, String password,
-            String refreshToken, boolean withRefreshToken
-    ){
-        Map<String,String> result =new HashMap<>();
 
+    // Exception's to be defined later on
+    public Map<String,String> register(String username,
+                                       String password ,boolean withRefreshToken) throws Exception {
+
+        UserEntity user =null ;
+        try{
+            user = UserEntity.builder()
+                    .username(username)
+                    .password(password)
+                    .address(null)
+                    .roles(List.of(Role.USER))
+                    .build();
+
+            var insertedUser= userRepository.save(user);
+
+        }catch(Exception e){
+            throw new  Exception("this username can't be used already exist try to choose an other one");
+        }
+        return this.authenticate(username,password,withRefreshToken);
+    }
+
+
+    public Map<String,String> refreshToken(String refreshToken){
+
+        String subject =jwtServices.getSubject(refreshToken);
+
+        UserDetails user =userDetailsService.loadUserByUsername(subject);
+        String scope =user.getAuthorities().stream()
+                .map(
+                        authority-> authority.getAuthority()
+                )   .collect(Collectors.joining(" "));
+        String accessToken=jwtServices.generateToken(scope,subject,true);
+        return Map.of("accessToken",accessToken);
+    }
+
+
+    public Map<String,String> authenticate(
+            String username, String password,
+             boolean withRefreshToken
+    ) throws Exception {
+
+        Map<String,String> result =new HashMap<>();
         String subject=null;
         String scope=null;
-        if(grantType.equals("USERNAME_PASSWORD")) {
-            Authentication authentication = authenticationManager.authenticate(
+        Authentication authentication=null;
+        try{
+            authentication= authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             username,
                             password
                     )
             );
-            subject =authentication.getName();
-            scope =authentication.getAuthorities().stream()
-                    .map(item->item.getAuthority())
-                    .collect(Collectors.joining(" "));
-        }
-        else if(grantType.equals("REFRESH_TOKEN")){
-            Jwt decodedToken = jwtDecoder.decode(refreshToken);
-            subject =decodedToken.getSubject();
-            UserDetails user =userDetailsService.loadUserByUsername(subject);
-            scope =user.getAuthorities().stream()
-                    .map(
-                            authority-> authority.getAuthority()
-                    )   .collect(Collectors.joining(" "));
-
+        }catch (Exception e){
+            throw new Exception("Bad credentials");
         }
 
-        Instant instant =Instant.now();
+        subject =authentication.getName();
+        scope =authentication.getAuthorities().stream()
+                .map(item->item.getAuthority())
+                .collect(Collectors.joining(" "));
 
-        JwtClaimsSet jwtClaimsSet = JwtClaimsSet.builder()
-                .subject(subject)
-                .issuer("authentication-svc")
-                .issuedAt(instant)
-                .expiresAt(instant.plus(5, ChronoUnit.MINUTES))
-                .claim("scope",scope)
-                .build();
-
-        String jwtToken =jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSet)).getTokenValue();
-        result.put("accessToken",jwtToken);
+        String accessToken=jwtServices.generateToken(scope,subject,false);
+        result.put("accessToken",accessToken);
         if(withRefreshToken){
-            JwtClaimsSet jwtClaimsSetRefresh = JwtClaimsSet.builder()
-                    .subject(subject)
-                    .issuer("authentication-svc")
-                    .issuedAt(instant)
-                    .expiresAt(instant.plus(5, ChronoUnit.MINUTES))
-                    .build();
-            String  jwtRefreshToken= jwtEncoder.encode(JwtEncoderParameters.from(jwtClaimsSetRefresh)).getTokenValue();
+            String  jwtRefreshToken=  jwtServices.generateToken(null,subject,false);
             result.put("refreshToken" , jwtRefreshToken);
         }
-
-
         return result;
     }
 }

@@ -36,17 +36,25 @@ public class AuthController {
                                  String username, String password,
                                  String refreshToken, boolean withRefreshToken){
 
-        Map<String,String> result=null;
-
         try{
-            result=this.authService.authenticate(
-                    grantType,username,password,refreshToken,withRefreshToken
-            );
+          Map<String,String> result = authService.register(username,password,withRefreshToken);
+            return new ResponseEntity<>(result,HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.BAD_REQUEST);
         }
+    }
 
-        return new ResponseEntity<>(result,HttpStatus.OK);
+    @PostMapping("/login")
+    ResponseEntity<Map> login(String grantType,
+                                 String username, String password,
+                                 String refreshToken, boolean withRefreshToken){
+
+        try{
+            Map<String,String> result = authService.authenticate(username,password,withRefreshToken);
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }catch(Exception e){
+            return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
