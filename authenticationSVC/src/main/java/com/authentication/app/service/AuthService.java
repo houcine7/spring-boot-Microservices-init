@@ -11,6 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -27,16 +29,18 @@ public class AuthService {
     UserDetailsService userDetailsService;
     UserRepository userRepository;
     JwtServices jwtServices;
+    PasswordEncoder passwordEncoder;
 
     AuthService(
     AuthenticationManager authenticationManager, JwtServices jwtServices,
     UserDetailsService userDetailsService,
-    UserRepository userRepository
+    UserRepository userRepository, PasswordEncoder passwordEncoder
     ){
         this.userDetailsService=userDetailsService;
         this.authenticationManager =authenticationManager;
         this.jwtServices=jwtServices;
         this.userRepository= userRepository;
+        this.passwordEncoder=passwordEncoder;
 
     }
 
@@ -49,7 +53,7 @@ public class AuthService {
         try{
             user = UserEntity.builder()
                     .username(username)
-                    .password(password)
+                    .password(passwordEncoder.encode(password))
                     .address(null)
                     .roles(List.of(Role.USER))
                     .build();
@@ -57,6 +61,7 @@ public class AuthService {
             var insertedUser= userRepository.save(user);
 
         }catch(Exception e){
+            System.out.println(e.getMessage());
             throw new  Exception("this username can't be used already exist try to choose an other one");
         }
         return this.authenticate(username,password,withRefreshToken);
@@ -71,7 +76,7 @@ public class AuthService {
         String scope =user.getAuthorities().stream()
                 .map(
                         authority-> authority.getAuthority()
-                )   .collect(Collectors.joining(" "));
+                ).collect(Collectors.joining(" "));
         String accessToken=jwtServices.generateToken(scope,subject,true);
         return Map.of("accessToken",accessToken);
     }
@@ -94,15 +99,18 @@ public class AuthService {
                     )
             );
         }catch (Exception e){
+            System.out.println(e.getMessage());
+            e.getStackTrace();
             throw new Exception("Bad credentials");
         }
 
+        System.out.println(authentication.toString());
         subject =authentication.getName();
         scope =authentication.getAuthorities().stream()
                 .map(item->item.getAuthority())
                 .collect(Collectors.joining(" "));
-
-        String accessToken=jwtServices.generateToken(scope,subject,false);
+        System.out.println(scope);
+        String accessToken=jwtServices.generateToken(scope,subject,true);
         result.put("accessToken",accessToken);
         if(withRefreshToken){
             String  jwtRefreshToken=  jwtServices.generateToken(null,subject,false);

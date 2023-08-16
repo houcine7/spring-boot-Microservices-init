@@ -16,14 +16,11 @@ public class JwtServices {
 
     JwtEncoder jwtEncoder;
     JwtDecoder jwtDecoder;
-    UserDetailsService userDetailsService;
 
-    JwtServices(JwtEncoder jwtEncoder , JwtDecoder jwtDecoder,
-                UserDetailsService userDetailsService
+    JwtServices(final JwtEncoder jwtEncoder , final JwtDecoder jwtDecoder
     ){
         this.jwtEncoder=jwtEncoder;
         this.jwtDecoder=jwtDecoder;
-        this.userDetailsService=userDetailsService;
     }
 
     public String generateToken(String scope, String subject,boolean isAccessToken){
