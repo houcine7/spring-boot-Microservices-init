@@ -1,15 +1,11 @@
 package com.authentication.app.service;
 
-import com.authentication.app.model.UserDetailsImp;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
-
 
 @Service
 public class JwtServices {

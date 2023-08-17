@@ -17,11 +17,11 @@ public class DevTestsController {
 
     @GetMapping("/data")
     @PreAuthorize("hasAuthority('SCOPE_USER')")
-    ResponseEntity<Map<String,String>> getInfo(Authentication authentication){
+    ResponseEntity<Map<String,String>> getInfo(Authentication authentication) {
         System.out.println("here");
-        System.out.println(authentication.getAuthorities() +"----"+ authentication.getName());
-        return new ResponseEntity<>(Map.of("test","user" ), HttpStatus.OK)
-
+        System.out.println(authentication.getAuthorities() + "----" + authentication.getName());
+        return new ResponseEntity<>(Map.of("test", "user"), HttpStatus.OK);
+    }
     @PostMapping("/data")
     @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
     ResponseEntity<Map<String,String>> post(String data){
