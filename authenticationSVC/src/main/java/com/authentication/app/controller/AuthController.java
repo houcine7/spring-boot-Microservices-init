@@ -30,7 +30,6 @@ public class AuthController {
         this.authService=authService;
     }
 
-
     @PostMapping("/register")
     ResponseEntity<Map> register(String grantType,
                                  String username, String password,
@@ -43,7 +42,6 @@ public class AuthController {
             return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.BAD_REQUEST);
         }
     }
-
     @PostMapping("/login")
     ResponseEntity<Map> login(String grantType,
                                  String username, String password,
@@ -54,6 +52,16 @@ public class AuthController {
             return new ResponseEntity<>(result,HttpStatus.OK);
         }catch(Exception e){
             return new ResponseEntity<>(Map.of("message",e.getMessage()),HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/tokens/refresh")
+    ResponseEntity<Map> refreshLogin(String refreshToken){
+        try{
+            Map<String,String> res = authService.refreshToken(refreshToken);
+            return  new ResponseEntity<>(res,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(Map.of("message","Error while performing this action"),HttpStatus.BAD_REQUEST);
         }
     }
 

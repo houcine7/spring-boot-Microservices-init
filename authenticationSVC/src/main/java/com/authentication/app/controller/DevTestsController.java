@@ -23,7 +23,7 @@ public class DevTestsController {
         return new ResponseEntity<>(Map.of("test", "user"), HttpStatus.OK);
     }
     @PostMapping("/data")
-    @PreAuthorize("hasAuthority('SCOPE_ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('SCOPE_ADMIN')")
     ResponseEntity<Map<String,String>> post(String data){
         System.out.println(data);
         return new ResponseEntity<>(Map.of("test","admin" ), HttpStatus.OK);
