@@ -51,6 +51,9 @@ public class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         return security.csrf(csrf -> csrf.disable())
+                // header to work with h2-console dev purpose to be enabled later on
+                .headers(headers -> headers.frameOptions(frameOptionsConfig -> frameOptionsConfig.disable()))
+                //
                 .cors(cors-> cors.disable())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(new AntPathRequestMatcher("/auth/**")
                         ,new AntPathRequestMatcher("/h2-console/**")).permitAll())
